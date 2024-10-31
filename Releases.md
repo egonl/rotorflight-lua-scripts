@@ -2,7 +2,7 @@
 
 This is the first _Release Candidate_ of the *Rotorflight 2.1 Lua Scripts for EdgeTX and OpenTX*.
 
-**NOTE** The final 2.1.0 Lua Scripts will be released _after_ a few release candidates. Please don't use RCs once the final release is out.
+**NOTE:** The final 2.1.0 Lua Scripts will be released _after_ a few release candidates. Please don't use RCs once the final release is out.
 
 ## Downloads
 
@@ -51,7 +51,7 @@ The download locations are:
 - Improved MSP handling and processing
 - *Adjustment Teller*: added support for accelerometer adjustments
 
-## Changes since 2.1.0 20240929
+## Changes since 2.1.0-20240929
 
 - Added page *ESC - FlyRotor*
 - Added *Settings* page
