@@ -13,7 +13,7 @@ local y = yMinLim - lineSpacing
 local inc = { x = function(val) x = x + val return x end, y = function(val) y = y + val return y end }
 local labels = {}
 local fields = {}
-local fcStatus = {}
+local fcStatus = { flightModeFlags }
 local dataflashSummary = {}
 local erasingDataflash = false
 local editing = false
@@ -47,6 +47,10 @@ fields[#fields + 1] = { t = "[Erase]",               x = x + indent * 7, y = y }
 inc.y(lineSpacing * 0.25)
 fields[#fields + 1] = { t = "Real-time load",        x = x,              y = inc.y(lineSpacing), sp = x + sp, data = { value = 0, scale = 10 }, readOnly = true }
 fields[#fields + 1] = { t = "CPU load",              x = x,              y = inc.y(lineSpacing), sp = x + sp, data = { value = 0, scale = 10 }, readOnly = true }
+
+inc.y(lineSpacing * 0.25)
+fields[#fields + 1] = { t = "flightModeFlags",       x = x,              y = inc.y(lineSpacing), sp = x + sp, data = { }, readOnly = true }
+
 
 local function armingDisableFlagsToString(flags)
     local t = ""
@@ -124,6 +128,7 @@ return {
         end
         fields[4].data.value = fcStatus.realTimeLoad
         fields[5].data.value = fcStatus.cpuLoad
+        fields[6].data.value = fcStatus.flightModeFlags
         rf2.lcdNeedsInvalidate = true
     end,
 
