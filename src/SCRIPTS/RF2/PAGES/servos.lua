@@ -102,7 +102,11 @@ return {
     end,
     timer = function(self)
         if updateSelectedServoConfiguration then
-            mspServos.setServoConfiguration(selectedServoIndex, servoConfigs[selectedServoIndex])
+            if rf2.apiVersion < 12.09 then
+                mspServos.setServoConfiguration(selectedServoIndex, servoConfigs[selectedServoIndex])
+            else
+                mspServos.setServoCenter(selectedServoIndex, servoConfigs[selectedServoIndex])
+            end
             updateSelectedServoConfiguration = false
         end
     end,

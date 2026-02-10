@@ -63,9 +63,20 @@ local function enableServoOverride(servoIndex)
     rf2.mspQueue:add(message)
 end
 
+local function setServoCenter(servoIndex, servoConfig)
+    local message = {
+        command = 213, -- MSP_SET_SERVO_CENTER
+        payload = {}
+    }
+    rf2.mspHelper.writeU8(message.payload, servoIndex)
+    rf2.mspHelper.writeU16(message.payload, servoConfig.mid.value)
+    rf2.mspQueue:add(message)
+end
+
 return {
     enableServoOverride = enableServoOverride,
     disableServoOverride = disableServoOverride,
     getServoConfigurations = getServoConfigurations,
-    setServoConfiguration = setServoConfiguration
+    setServoConfiguration = setServoConfiguration,
+    setServoCenter = setServoCenter
 }
