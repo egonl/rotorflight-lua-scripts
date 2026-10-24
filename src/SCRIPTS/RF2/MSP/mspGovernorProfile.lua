@@ -21,6 +21,9 @@ local function getDefaults()
     end
     if rf2.apiVersion >= 12.10 then
         defaults.tta_threshold = { value = nil, min = 0, max = 250, scale = 10, unit = rf2.units.percentage }
+        defaults.tta_banking = { value = nil, min = 0, max = 1, table = { [0] = "Off", "On" } }
+        defaults.tta_bank_limit = { value = nil, min = 0, max = 25, unit = rf2.units.percentage }
+        defaults.tta_bank_rate = { value = nil, min = 1, max = 100, unit = rf2.units.percentage }
     end
     return defaults
 end
@@ -52,10 +55,14 @@ local function getGovernorProfile(callback, callbackParam, data)
             end
             if rf2.apiVersion >= 12.10 then
                 data.tta_threshold.value = rf2.mspHelper.readU8(buf)
+                data.tta_bank_limit.value = rf2.mspHelper.readU8(buf)
+                data.tta_bank_rate.value = rf2.mspHelper.readU8(buf)
+                local getBit = rf2.executeScript("F/getBit")
+                data.tta_banking.value = getBit(data.flags.value, 7)
             end
             callback(callbackParam, data)
         end,
-        simulatorResponse = { 208, 7, 100, 10, 125, 5, 20, 0, 20, 10, 40, 100, 100, 10, 10, 0, 0, 0 }
+        simulatorResponse = { 208, 7, 100, 10, 125, 5, 20, 0, 20, 10, 40, 100, 100, 10, 10, 0, 0, 0, 10, 20 }
     }
     rf2.mspQueue:add(message)
 end
@@ -82,11 +89,17 @@ local function setGovernorProfile(data)
         rf2.mspHelper.writeU8(message.payload, data.min_throttle.value)
     end
     if rf2.apiVersion >= 12.09 then
+        if rf2.apiVersion >= 12.10 then
+            local setBit = rf2.executeScript("F/setBit")
+            data.flags.value = setBit(data.flags.value, 7, data.tta_banking.value)
+        end
         rf2.mspHelper.writeU8(message.payload, data.fallback_drop.value)
         rf2.mspHelper.writeU16(message.payload, data.flags.value)
     end
     if rf2.apiVersion >= 12.10 then
         rf2.mspHelper.writeU8(message.payload, data.tta_threshold.value)
+        rf2.mspHelper.writeU8(message.payload, data.tta_bank_limit.value)
+        rf2.mspHelper.writeU8(message.payload, data.tta_bank_rate.value)
     end
     rf2.mspQueue:add(message)
 end

@@ -42,6 +42,9 @@ fields[#fields + 1] = { t = "TTA gain",            x = x, y = incY(lineSpacing),
 fields[#fields + 1] = { t = "TTA limit",           x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_limit,            id = "govTTALimit" }
 if rf2.apiVersion >= 12.10 then
     fields[#fields + 1] = { t = "TTA threshold",    x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_threshold,       id = "govTTAThreshold" }
+    fields[#fields + 1] = { t = "TTA banking",      x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_banking,         id = "govTTABanking" }
+    fields[#fields + 1] = { t = "TTA bank limit",   x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_bank_limit,      id = "govTTABankLimit" }
+    fields[#fields + 1] = { t = "TTA bank rate",    x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_bank_rate,       id = "govTTABankRate" }
 end
 
 local function receivedGovernorProfile(page, _)
