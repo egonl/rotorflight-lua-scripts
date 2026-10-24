@@ -40,6 +40,9 @@ incY(lineSpacing * 0.5)
 labels[#labels + 1] = { t = "TTA",                 x = x, y = incY(lineSpacing) }
 fields[#fields + 1] = { t = "TTA gain",            x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_gain,             id = "govTTAGain" }
 fields[#fields + 1] = { t = "TTA limit",           x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_limit,            id = "govTTALimit" }
+if rf2.apiVersion >= 12.10 then
+    fields[#fields + 1] = { t = "TTA threshold",    x = x, y = incY(lineSpacing), sp = x + sp, data = governorProfile.tta_threshold,       id = "govTTAThreshold" }
+end
 
 local function receivedGovernorProfile(page, _)
     rf2.onPageReady(page)

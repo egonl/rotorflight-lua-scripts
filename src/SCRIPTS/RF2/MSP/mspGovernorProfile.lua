@@ -19,6 +19,9 @@ local function getDefaults()
         defaults.fallback_drop = { min = 0, max = 50, unit = rf2.units.percentage }
         defaults.flags = { }
     end
+    if rf2.apiVersion >= 12.10 then
+        defaults.tta_threshold = { value = nil, min = 0, max = 250, scale = 10, unit = rf2.units.percentage }
+    end
     return defaults
 end
 
@@ -47,9 +50,12 @@ local function getGovernorProfile(callback, callbackParam, data)
                 data.fallback_drop.value = rf2.mspHelper.readU8(buf)
                 data.flags.value = rf2.mspHelper.readU16(buf)
             end
+            if rf2.apiVersion >= 12.10 then
+                data.tta_threshold.value = rf2.mspHelper.readU8(buf)
+            end
             callback(callbackParam, data)
         end,
-        simulatorResponse = { 208, 7, 100, 10, 125, 5, 20, 0, 20, 10, 40, 100, 100, 10, 10, 0, 0 }
+        simulatorResponse = { 208, 7, 100, 10, 125, 5, 20, 0, 20, 10, 40, 100, 100, 10, 10, 0, 0, 0 }
     }
     rf2.mspQueue:add(message)
 end
@@ -78,6 +84,9 @@ local function setGovernorProfile(data)
     if rf2.apiVersion >= 12.09 then
         rf2.mspHelper.writeU8(message.payload, data.fallback_drop.value)
         rf2.mspHelper.writeU16(message.payload, data.flags.value)
+    end
+    if rf2.apiVersion >= 12.10 then
+        rf2.mspHelper.writeU8(message.payload, data.tta_threshold.value)
     end
     rf2.mspQueue:add(message)
 end

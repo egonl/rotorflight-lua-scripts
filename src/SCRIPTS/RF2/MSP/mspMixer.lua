@@ -19,7 +19,6 @@ local function getDefaults()
     end
     if rf2.apiVersion >= 12.10 then
         defaults.tail_motor_lead = { min = 0, max = 250, unit = rf2.units.milliseconds }
-        defaults.tail_tta_threshold = { min = 0, max = 250, scale = 10, unit = rf2.units.percentage }
     end
  return defaults
 end
@@ -48,11 +47,10 @@ local function getMixerConfig(callback, callbackParam, data)
             end
             if rf2.apiVersion >= 12.10 then
                 data.tail_motor_lead.value = rf2.mspHelper.readU8(buf)
-                data.tail_tta_threshold.value = rf2.mspHelper.readU8(buf)
             end
             callback(callbackParam, data)
         end,
-        simulatorResponse = { 0, 0, 0, 0, 0, 2, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        simulatorResponse = { 0, 0, 0, 0, 0, 2, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     }
     rf2.mspQueue:add(message)
 end
@@ -82,7 +80,6 @@ local function setMixerConfig(data)
     end
     if rf2.apiVersion >= 12.10 then
         rf2.mspHelper.writeU8(message.payload, data.tail_motor_lead.value)
-        rf2.mspHelper.writeU8(message.payload, data.tail_tta_threshold.value)
     end
     rf2.mspQueue:add(message)
 end
